@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/patients")
 public class PatientController {
-    private PatientService patientService;
+    private final PatientService patientService;
     @Autowired
     public PatientController(PatientService patientService){
         this.patientService = patientService;
