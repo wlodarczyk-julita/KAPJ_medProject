@@ -5,8 +5,8 @@
     <title>Patient page</title>
 </head>
 <body>
-<h1>patient info:</h1>
-<form:form method="post" action="addAppUser.html" modelAttribute="patient">
+<h1>Patient Information:</h1>
+<form:form method="post" action="addPatient.html" modelAttribute="patient">
 
     <table>
         <tr>
@@ -24,6 +24,18 @@
         <tr>
             <td><form:label path="telephone">Telephone</form:label></td>
             <td><form:input path="telephone" /></td>
+        </tr>
+        <tr>
+            <td><form:label path="dateOfBirth">Date of Birth</form:label></td>
+            <td><form:input path="dateOfBirth" type="date" /></td>
+        </tr>
+        <tr>
+            <td><form:label path="address">Address</form:label></td>
+            <td><form:input path="address" /></td>
+        </tr>
+        <tr>
+            <td><form:label path="pesel">PESEL</form:label></td>
+            <td><form:input path="pesel" /></td>
         </tr>
         <tr>
             <td colspan="2">
