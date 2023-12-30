@@ -6,7 +6,7 @@
 <body>
 <h3>Hello world!</h3>
 
-<a href="${pageContext.request.contextPath}/appUsers.html">App users page</a>
+<a href="${pageContext.request.contextPath}/patients.html">Patients page</a>
 
 <br/>
 ${serverTime}
