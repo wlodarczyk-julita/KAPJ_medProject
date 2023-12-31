@@ -9,16 +9,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "medical_history")
+@Table(name = "patient_history")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class MedicalHistory {
+public class PatientHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long medicalHistoryID;
+    private Long PatientHistoryID;
     @NotBlank(message = "Name cannot be empty")
     private String name;
     @Temporal(TemporalType.DATE)
@@ -26,11 +26,9 @@ public class MedicalHistory {
     @NotBlank(message = "Treatment cannot be empty")
     private String treatment;
     private Boolean isCured = false;
-    @Builder.Default //NullPointerException protection
-    @ManyToMany
-    @JoinTable(
-            name = "DiseaseMedicalHistory",
-            joinColumns = @JoinColumn(name = "medicalHistoryID"),
-            inverseJoinColumns = @JoinColumn(name = "diseaseID"))
-    private Set<Disease> disease = new HashSet<>();
+    private String otherConfidentialMedicalInformation;
+    @ManyToOne
+    private Patient patient;
+    @ManyToOne
+    private Disease disease;
 }

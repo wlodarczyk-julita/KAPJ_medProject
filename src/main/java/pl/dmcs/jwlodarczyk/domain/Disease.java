@@ -22,7 +22,7 @@ public class Disease {
     private String name;
     @NotBlank(message = "Description cannot be empty")
     private String description;
+    @OneToMany(mappedBy = "disease")
     @Builder.Default
-    @ManyToMany(mappedBy = "diseases")
-    private Set<MedicalHistory> medicalHistories = new HashSet<>();
+    private Set<PatientHistory> patientHistories = new HashSet<>();
 }

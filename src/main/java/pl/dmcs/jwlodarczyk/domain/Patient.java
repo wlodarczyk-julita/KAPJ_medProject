@@ -34,9 +34,12 @@ public class Patient {
     @NotBlank(message = "PESEL cannot be empty")
     @Size(min=11, max=11, message = "PESEL must have 11 characters")
     private String pesel;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "patient")
-    private PatientCard patientCard;
+    @OneToMany(mappedBy = "patient")
+    @Builder.Default
+    private Set<PatientHistory> patientHistories = new HashSet<>();
     @OneToMany(mappedBy = "patient")
     @Builder.Default
     private Set<Appointment> appointments = new HashSet<>();
+    @OneToOne(cascade = CascadeType.ALL)
+    private FinancialData financialData;
 }
