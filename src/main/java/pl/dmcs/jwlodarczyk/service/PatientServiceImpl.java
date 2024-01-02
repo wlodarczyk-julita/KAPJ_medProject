@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dmcs.jwlodarczyk.dao.PatientRepository;
 import pl.dmcs.jwlodarczyk.domain.Patient;
-import pl.dmcs.jwlodarczyk.utils.ValidationUtils;
+import pl.dmcs.jwlodarczyk.utils.Validation;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -32,9 +32,10 @@ public class PatientServiceImpl implements PatientService{
     }
     @Transactional
     public Patient addPatient(Patient patient) {
-        ValidationUtils.validatePesel(patient.getPesel());
-        ValidationUtils.validateDateOfBirth(patient.getDateOfBirth());
-        ValidationUtils.validatePhoneNumber(patient.getTelephone());
+        Validation.validatePesel(patient.getPesel());
+        Validation.validateDateOfBirth(patient.getDateOfBirth());
+        Validation.validatePhoneNumber(patient.getTelephone());
+        Validation.validatePhoneNumber(patient.getTelephone());
         if (patientRepository.existsByTelephone(patient.getTelephone())) {
             throw new IllegalArgumentException("Patient with the same phone number already exists");
         }
@@ -58,7 +59,6 @@ public class PatientServiceImpl implements PatientService{
             existingPatient.setDateOfBirth(updatedPatient.getDateOfBirth());
             existingPatient.setAddress(updatedPatient.getAddress());
             existingPatient.setPesel(updatedPatient.getPesel());
-            existingPatient.setPatientCard(updatedPatient.getPatientCard());
             existingPatient.setAppointments(updatedPatient.getAppointments());
             return patientRepository.save(existingPatient);
         } else {
