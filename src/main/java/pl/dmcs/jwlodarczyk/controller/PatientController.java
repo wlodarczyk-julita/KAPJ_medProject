@@ -2,6 +2,8 @@ package pl.dmcs.jwlodarczyk.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,10 +12,12 @@ import org.springframework.web.servlet.ModelAndView;
 import pl.dmcs.jwlodarczyk.domain.Patient;
 import pl.dmcs.jwlodarczyk.service.PatientService;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "/patients")
+//@RequestMapping(value = "/patients")
 public class PatientController {
     private final PatientService patientService;
     @Autowired
@@ -30,15 +34,15 @@ public class PatientController {
         Patient patient = patientService.getPatientById(id);
         return ResponseEntity.ok().body(patient);
     }
-    @PostMapping(value = "/add")
-    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
-        Patient savedPatient = patientService.addPatient(patient);
-        System.out.println("First Name: " + patient.getFirstName() +
-                " Last Name: " + patient.getLastName() + " Tel.: " +
-                patient.getTelephone() + " Email: " + patient.getEmail());
-        addPatients(patient);
-       return ResponseEntity.ok().body(savedPatient);
-    }
+//    @PostMapping(value = "/add")
+//    public ResponseEntity<Patient> addPatient(@RequestBody Patient patient) {
+//        Patient savedPatient = patientService.addPatient(patient);
+//        System.out.println("First Name: " + patient.getFirstName() +
+//                " Last Name: " + patient.getLastName() + " Tel.: " +
+//                patient.getTelephone() + " Email: " + patient.getEmail());
+//        addPatients(patient);
+//       return ResponseEntity.ok().body(savedPatient);
+//    }
     @PutMapping("/{id}")
     public ResponseEntity<Patient> updatePatient(@PathVariable long id, @RequestBody Patient patient) {
         Patient updatedPatient = patientService.updatePatient(id, patient);
@@ -51,21 +55,53 @@ public class PatientController {
     }
     public ModelAndView showPatient() {
 
-	 /*  AppUser appUser = new AppUser();
-	   appUser.setFirstName("rafal");
-	   appUser.setLastName("kotas");
-	   appUser.setEmail("rkotas@dmcs.pl");
-	   appUser.setTelephone("123456789");*/
+	 /*  Patient patient = new Patient();
+	   patient.setFirstName("rafal");
+	   patient.setLastName("kotas");
+	   patient.setEmail("rkotas@dmcs.pl");
+	   patient.setTelephone("123456789");*/
 
 	 return new ModelAndView("patient", "patient", new Patient());
     }
 
+//    @RequestMapping(value = "/patients", method = RequestMethod.POST)
+//    public String showPatients(Model model, HttpServletRequest request) {
+//        System.out.println("First Name: " + patient.getFirstName() +
+//                " Last Name: " + patient.getLastName() + " Tel.: " +
+//                patient.getTelephone() + " Email: " + patient.getEmail());
+//        return "redirect:Patient.html";
+//    }
+
+    @RequestMapping(value = "/patients")
+    public String showPatients(Model model, HttpServletRequest request) {
+        int patientId = ServletRequestUtils.getIntParameter(request, "patientId" , -1);
+        if (patientId > 0)
+            model.addAttribute("patient", patientService.getPatientById(patientId));
+        else
+            model.addAttribute("patient", new Patient());
+        model.addAttribute("patientList", patientService.getAllPatients());
+        return "patient";
+    }
+
     @RequestMapping(value = "/addPatient", method = RequestMethod.POST)
-    public String addPatients(@ModelAttribute("patient") Patient patient) {
+    public String addPatient(@ModelAttribute("patient") Patient patient) {
+
         System.out.println("First Name: " + patient.getFirstName() +
                 " Last Name: " + patient.getLastName() + " Tel.: " +
                 patient.getTelephone() + " Email: " + patient.getEmail());
-        return "redirect:Patient.html";
+
+//        if (patient.getId()==0)
+//            patientService.addPatient(patient);
+//        else
+//            patientService.updatePatient(1, patient);
+
+        return "redirect:patients.html";
+    }
+
+    @RequestMapping("/delete/{patientId}")
+    public String deleteUser(@PathVariable("patientId") Long patientId) {
+        patientService.deletePatient(patientId);
+        return "redirect:/patients.html";
     }
 }
 

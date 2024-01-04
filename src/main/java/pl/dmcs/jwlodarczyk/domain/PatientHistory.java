@@ -1,12 +1,9 @@
 package pl.dmcs.jwlodarczyk.domain;
 
 import lombok.*;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
 @Entity
 @Table(name = "patient_history")
@@ -22,7 +19,7 @@ public class PatientHistory {
     @NotBlank(message = "Name cannot be empty")
     private String name;
     @Temporal(TemporalType.DATE)
-    private LocalDate diagnosisDate;
+    private Date diagnosisDate;
     @NotBlank(message = "Treatment cannot be empty")
     private String treatment;
     private Boolean isCured = false;
