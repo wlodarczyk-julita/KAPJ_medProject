@@ -20,7 +20,7 @@ public class HelloController {
 
         model.addAttribute("serverTime", formattedDate );
 
-        return "hello";
+        return "views/hello";
     }
 }
 

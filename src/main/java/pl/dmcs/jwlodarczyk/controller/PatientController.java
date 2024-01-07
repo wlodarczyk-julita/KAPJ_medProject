@@ -61,7 +61,7 @@ public class PatientController {
 	   patient.setEmail("rkotas@dmcs.pl");
 	   patient.setTelephone("123456789");*/
 
-	 return new ModelAndView("patient", "patient", new Patient());
+	 return new ModelAndView("views/patient", "patient", new Patient());
     }
 
 //    @RequestMapping(value = "/patients", method = RequestMethod.POST)
@@ -80,20 +80,19 @@ public class PatientController {
         else
             model.addAttribute("patient", new Patient());
         model.addAttribute("patientList", patientService.getAllPatients());
-        return "patient";
+        return "views/patient";
     }
 
     @RequestMapping(value = "/addPatient", method = RequestMethod.POST)
     public String addPatient(@ModelAttribute("patient") Patient patient) {
-
         System.out.println("First Name: " + patient.getFirstName() +
                 " Last Name: " + patient.getLastName() + " Tel.: " +
                 patient.getTelephone() + " Email: " + patient.getEmail());
 
-//        if (patient.getId()==0)
-//            patientService.addPatient(patient);
-//        else
-//            patientService.updatePatient(1, patient);
+        if (patient.getPatientID()==0)
+            patientService.addPatient(patient);
+        else
+            patientService.addPatient(patient);
 
         return "redirect:patients.html";
     }

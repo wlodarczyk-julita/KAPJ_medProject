@@ -7,7 +7,7 @@
 <h3>Hello world!</h3>
 
 <a href="${pageContext.request.contextPath}/patients.html">Patients page</a>
-
+<a href="${pageContext.request.contextPath}/diseases.html">Disease page</a>
 <br/>
 ${serverTime}
 

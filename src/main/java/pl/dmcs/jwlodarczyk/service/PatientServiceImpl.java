@@ -31,7 +31,7 @@ public class PatientServiceImpl implements PatientService{
         }
     }
     @Transactional
-    public Patient addPatient(Patient patient) {
+    public void addPatient(Patient patient) {
         Validation.validatePesel(patient.getPesel());
         Validation.validateDateOfBirth(patient.getDateOfBirth());
         Validation.validatePhoneNumber(patient.getTelephone());
@@ -45,7 +45,7 @@ public class PatientServiceImpl implements PatientService{
         if (patientRepository.existsByPesel(patient.getPesel())) {
             throw new IllegalArgumentException("Patient with the same pesel already exists");
         }
-        return patientRepository.save(patient);
+        patientRepository.save(patient);
     }
     @Transactional
     public Patient updatePatient(long id, Patient updatedPatient) {
