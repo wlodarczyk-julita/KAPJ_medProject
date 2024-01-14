@@ -26,6 +26,7 @@ public class Patient {
     @Email(message = "Invalid email address")
     private String email;
     @Size(min = 9, max = 9, message = "Telephone number must have 9 characters")
+    @Column(unique = true)
     private String telephone;
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
@@ -33,6 +34,7 @@ public class Patient {
     private String  address;
     @NotBlank(message = "PESEL cannot be empty")
     @Size(min=11, max=11, message = "PESEL must have 11 characters")
+    @Column(unique = true)
     private String pesel;
     @OneToMany(mappedBy = "patient")
     @Builder.Default
@@ -42,4 +44,13 @@ public class Patient {
     private Set<Appointment> appointments = new HashSet<>();
     @OneToOne(cascade = CascadeType.ALL)
     private FinancialData financialData;
+
+    @NotNull
+    @Column(unique = true)
+    private String login;
+    @NotNull
+    private String password;
+    private boolean enabled;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<PatientRole> role = new HashSet<PatientRole>(0);
 }

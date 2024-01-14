@@ -1,9 +1,11 @@
 package pl.dmcs.jwlodarczyk.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.dmcs.jwlodarczyk.dao.PatientRepository;
+import pl.dmcs.jwlodarczyk.dao.PatientRoleRepository;
 import pl.dmcs.jwlodarczyk.domain.Patient;
 import pl.dmcs.jwlodarczyk.utils.Validation;
 import javax.persistence.EntityNotFoundException;
@@ -13,9 +15,11 @@ import java.util.Optional;
 @Transactional
 public class PatientServiceImpl implements PatientService{
     private final PatientRepository patientRepository;
+    private final PatientRoleRepository patientRoleRepository;
     @Autowired
-    public PatientServiceImpl(PatientRepository patientRepository) {
+    public PatientServiceImpl(PatientRepository patientRepository, PatientRoleRepository patientRoleRepository) {
         this.patientRepository = patientRepository;
+        this.patientRoleRepository = patientRoleRepository;
     }
     @Transactional
     public List<Patient> getAllPatients() {
@@ -28,6 +32,15 @@ public class PatientServiceImpl implements PatientService{
             return optionalPatient.get();
         } else {
             throw new EntityNotFoundException("Patient with id " + id + " not found");
+        }
+    }
+    @Transactional
+    public Patient getPatientByLogin(String login) {
+        Optional<Patient> optionalPatient = patientRepository.findByLogin(login);
+        if (optionalPatient.isPresent()) {
+            return optionalPatient.get();
+        } else {
+            throw new EntityNotFoundException("Patient with login " + login + " not found");
         }
     }
     @Transactional
@@ -45,7 +58,14 @@ public class PatientServiceImpl implements PatientService{
         if (patientRepository.existsByPesel(patient.getPesel())) {
             throw new IllegalArgumentException("Patient with the same pesel already exists");
         }
+        patient.getRole().add(patientRoleRepository.findByRole("ROLE_PATIENT"));
+        patient.setPassword(hashPassword(patient.getPassword()));
         patientRepository.save(patient);
+    }
+    private String hashPassword(String password)
+    {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder.encode(password);
     }
     @Transactional
     public Patient updatePatient(long id, Patient updatedPatient) {
@@ -60,6 +80,8 @@ public class PatientServiceImpl implements PatientService{
             existingPatient.setAddress(updatedPatient.getAddress());
             existingPatient.setPesel(updatedPatient.getPesel());
             existingPatient.setAppointments(updatedPatient.getAppointments());
+            updatedPatient.getRole().add(patientRoleRepository.findByRole("ROLE_PATIENT"));
+            updatedPatient.setPassword(hashPassword(updatedPatient.getPassword()));
             return patientRepository.save(existingPatient);
         } else {
             throw new EntityNotFoundException("Patient with id " + id + " not found");

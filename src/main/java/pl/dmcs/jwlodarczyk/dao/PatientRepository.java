@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface PatientRepository extends JpaRepository<Patient, Long> {
     List<Patient> findAll();
     Optional<Patient> findByPatientID(long PatientID);
+    Optional<Patient> findByLogin(String login);
     void deleteByPatientID(long PatientID);
     boolean existsByTelephone(String telephone);
     boolean existsByPesel(String pesel);

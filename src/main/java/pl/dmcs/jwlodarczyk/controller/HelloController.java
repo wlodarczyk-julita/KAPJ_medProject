@@ -13,14 +13,12 @@ public class HelloController {
 
     @RequestMapping(value = "/")
     public String helloWorld(Locale locale, Model model) {
-
         Date date = new Date();
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
         String formattedDate = dateFormat.format(date);
-
         model.addAttribute("serverTime", formattedDate );
-
-        return "views/hello";
+        model.addAttribute("message","Kodowanie polskich znaków bez UTF-8: ółźżćśńąę");
+        return "views/login";
     }
 }
 

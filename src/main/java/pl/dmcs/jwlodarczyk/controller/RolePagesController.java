@@ -5,16 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class RolePagesController {
-    @RequestMapping(value = "/exampleOne")
+    @RequestMapping(value = "/role/exampleOne")
     public String exampleOne() {
         return "views/exampleOne";
-    }
-    @RequestMapping(value = "/exampleTwo")
-    public String exampleTwo() {
-        return "views/exampleTwo";
-    }
-    @RequestMapping(value = "/exampleThree")
-    public String exampleThree() {
-        return "views/exampleThree";
     }
 }
