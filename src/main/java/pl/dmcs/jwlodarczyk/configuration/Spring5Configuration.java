@@ -72,5 +72,10 @@ public class Spring5Configuration implements WebMvcConfigurer {
         return bean;
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/**")
+                .addResourceLocations("/resources/");
+    }
 }
 
