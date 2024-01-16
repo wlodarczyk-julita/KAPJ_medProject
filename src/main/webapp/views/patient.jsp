@@ -85,6 +85,9 @@
 
     <table>
         <tr>
+            <td><form:hidden path="patientID"/>
+        </tr>
+        <tr>
             <td><spring:message code="label.firstName" /></td>
             <td><form:input path="firstName" /></td>
             <td><form:errors path="firstName" /></td>
@@ -121,10 +124,37 @@
         </tr>
         <tr>
             <td colspan="2">
-                <input type="submit" value="Add Patient"/>
+                <c:if test="${patient.patientID==0}">
+                    <input type="submit" value="<spring:message code="label.addAppUser"/>"/>
+                </c:if>
+                <c:if test="${patient.patientID!=0}">
+                    <input type="submit" value="<spring:message code="label.editAppUser"/>"/>
+                </c:if>
             </td>
         </tr>
     </table>
+    <h3><spring:message code="label.userList"/></h3>
+    <c:if  test="${!empty patientList}">
+        <table class="data">
+            <tr>
+                <th><spring:message code="label.firstName"/></th>
+                <th><spring:message code="label.lastName"/></th>
+                <th><spring:message code="label.email"/></th>
+                <th><spring:message code="label.telephone"/></th>
+                <th>&nbsp;</th>
+                <th>&nbsp;</th>
+            </tr>
+            <c:forEach items="${patientList}" var="appUser">
+                <tr>
+                    <td>${patient.firstName} </td>
+                    <td>${patient.lastName} </td>
+                    <td>${patient.email}</td>
+                    <td>${patient.telephone}</td>
+                    <td><a href="delete/${patient.patientID}.html">delete</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
 
 </form:form>
     </div>

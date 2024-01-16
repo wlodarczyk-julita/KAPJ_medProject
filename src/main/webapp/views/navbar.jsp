@@ -55,4 +55,7 @@
                  class="small-flag">
         </a>
     </form>
+
+    <a href="<c:url value='/'/>">Login</a>
+    <a href="<c:url value='/patients'/>">Registration</a>
 </div>
